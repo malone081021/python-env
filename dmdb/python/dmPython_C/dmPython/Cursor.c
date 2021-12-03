@@ -556,9 +556,11 @@ Cursor_InternalPrepare(
 
     /* 清理上次的描述和执行信息 */
     Cursor_clearDescExecInfo(self, 1);
-    
+
 	// prepare statement
     Py_BEGIN_ALLOW_THREADS
+        //prepare之前清空上一次绑定参数信息
+        status = dpi_unbind_params(self->handle);
         status = dpi_prepare(self->handle, (sdbyte*)statementBuffer.ptr);
     Py_END_ALLOW_THREADS
 
@@ -843,6 +845,7 @@ Cursor_InternalExecute(
 )
 {
 	DPIRETURN 		status = DSQL_SUCCESS;
+    sdint2          ret;
 
     Cursor_clearDescExecInfo(self, 0);
 
@@ -865,9 +868,19 @@ Cursor_InternalExecute(
         {
             return -1;
         }
-    }    
+    }
 
-	return Cursor_SetRowCount(self);
+    ret     = Cursor_SetRowCount(self);
+
+    //存在绑定参数，则unbind param
+    if (self->paramCount > 0)
+    {
+        Py_BEGIN_ALLOW_THREADS
+            status = dpi_unbind_params(self->handle);
+        Py_END_ALLOW_THREADS
+    }
+
+    return ret;
 }
 
 static

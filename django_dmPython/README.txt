@@ -1,0 +1,1 @@
+达梦提供Django驱动Django_dmPython，版本2.2.3，对应Django2.2.X系列
