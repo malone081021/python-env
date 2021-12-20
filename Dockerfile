@@ -27,7 +27,7 @@ RUN set -ex \
     && sudo apt install -y libmediainfo-dev \
     && sudo apt install -y python3-pip libkrb5-dev openssh-server ffmpeg \
     && sudo apt install -y zip \
-	&& sudo apt-get install libaio1 libaio-dev \
+    && sudo apt-get install libaio1 libaio-dev \
     	# python env install
     && mkdir -p ~/.pip \
     && echo '[global]' > ~/.pip/pip.conf \
@@ -41,11 +41,11 @@ RUN set -ex \
     && sudo rm -rf ~/data/dpi \
     && sudo rm -rf ~/data/python \
     # && sudo python -m pip install --upgrade pip \
-	# install 
+	# python dependency  install 
     && cd /home/docker/data \
     && pip install -r  requirements-a.txt \
     && sudo rm -rf requirements-a.txt \
-    	# oracle
+    	# oracle driver
     && sudo unzip instantclient-basic-linux.x64-12.2.0.1.0.zip  -d /opt/oracle \
     && sudo unzip instantclient-sqlplus-linux.x64-12.2.0.1.0.zip  -d /opt/oracle/ \
     && sudo rm -rf instantclient-basic-linux.x64-12.2.0.1.0.zip \
@@ -63,6 +63,12 @@ RUN set -ex \
    # && cd /home/docker/data/django_dmPython \
     && python setup.py install
 
+RUN set -ex \
+	&& cd ~ \
+	&& rm -rf .pip \
+	&& rm -rf data
+
+ADD sshd_config /etc/ssh/sshd_config
 	
 
 

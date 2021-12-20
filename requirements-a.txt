@@ -60,7 +60,7 @@ docopt==0.6.2
 docutils==0.17.1
 docxtpl==0.11.5
 dominate==2.6.0
-dwebsocket==0.4.2
+dwebsocket==0.5.12
 elasticsearch==7.11.0
 english==2020.7.0
 et-xmlfile==1.0.1
